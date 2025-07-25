@@ -1,29 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Text to Speech</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header>
-    <h1>🎤 Text to Speech Converter</h1>
-    <a href="index.html">⬅️ Back to Home</a>
+    <h1>🎤 Text to Speech</h1>
   </header>
 
   <main>
-    <section class="tool">
-      <textarea id="textInput" placeholder="Enter text here..." rows="6" cols="50"></textarea><br><br>
-      <select id="langSelect">
+    <section class="tts-container">
+      <textarea id="text" rows="6" placeholder="Yahan apna text likho..."></textarea><br>
+      <select id="language">
         <option value="en-us">English (US)</option>
         <option value="en-gb">English (UK)</option>
         <option value="hi-in">Hindi (India)</option>
       </select><br><br>
-      <button onclick="convertTextToSpeech()">🔊 Convert to Speech</button><br><br>
-      <audio id="audioPlayer" controls style="display: none;"></audio>
+      <button onclick="convertToSpeech()">🔊 Speak</button>
+      <p id="status" style="color: green;"></p>
     </section>
   </main>
 
-  <script src="js/text-to-speech.js"></script>
+  <script>
+    function convertToSpeech() {
+      const text = document.getElementById("text").value;
+      const lang = document.getElementById("language").value;
+      const status = document.getElementById("status");
+      
+      if (!text) {
+        alert("Pehle text likho!");
+        return;
+      }
+
+      status.textContent = "Loading voice...";
+
+      const apiKey = "4a4653ca3a784589b0d241c6f8ad581c";
+      const url = `https://api.voicerss.org/?key=${apiKey}&hl=${lang}&src=${encodeURIComponent(text)}`;
+
+      const audio = new Audio(url);
+      audio.play();
+
+      audio.onplaying = () => {
+        status.textContent = "Playing...";
+      };
+
+      audio.onended = () => {
+        status.textContent = "Done!";
+      };
+
+      audio.onerror = () => {
+        status.textContent = "Kuch galti ho gayi! Try again.";
+      };
+    }
+  </script>
+
+  <style>
+    .tts-container {
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+      padding: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+
 </body>
 </html>
