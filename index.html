@@ -35,6 +35,46 @@
     </section>
   </main>
 
+  <script>
+let subtitles = [];
+let counter = 1;
+let startTime = Date.now();
+
+function getTimeDiff() {
+  const now = Date.now();
+  const diff = now - startTime;
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const s = String(seconds % 60).padStart(2, '0');
+  const m = String(minutes % 60).padStart(2, '0');
+  const h = String(hours).padStart(2, '0');
+  const ms = String(diff % 1000).padStart(3, '0');
+  return `${h}:${m}:${s},${ms}`;
+}
+
+recognition.onresult = function(event) {
+  const transcript = event.results[event.results.length - 1][0].transcript.trim();
+  const endTime = getTimeDiff();
+  let start = startTime;
+  let srt = `${counter}\n${getTimeDiff()} --> ${getTimeDiff()}\n${transcript}\n\n`;
+  subtitles.push(srt);
+  counter++;
+  startTime = Date.now();
+  document.getElementById("output").innerHTML += transcript + "<br>";
+};
+
+function downloadSubtitles() {
+  const blob = new Blob([subtitles.join("")], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "subtitles.srt";
+  a.click();
+}
+    <button onclick="downloadSubtitles()">⬇️ Download Subtitles</button>
+  </script>
+ 
   <footer>
     <p>© 2025 AI Toolkit - All Free AI Tools</p>
   </footer>
