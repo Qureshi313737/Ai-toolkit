@@ -1,1 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text to Speech</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>🎤 Text to Speech Converter</h1>
+    <a href="index.html">⬅️ Back to Home</a>
+  </header>
 
+  <main>
+    <section class="tool">
+      <textarea id="textInput" placeholder="Enter text here..." rows="6" cols="50"></textarea><br><br>
+      <select id="langSelect">
+        <option value="en-us">English (US)</option>
+        <option value="en-gb">English (UK)</option>
+        <option value="hi-in">Hindi (India)</option>
+      </select><br><br>
+      <button onclick="convertTextToSpeech()">🔊 Convert to Speech</button><br><br>
+      <audio id="audioPlayer" controls style="display: none;"></audio>
+    </section>
+  </main>
+
+  <script src="js/text-to-speech.js"></script>
+</body>
+</html>
